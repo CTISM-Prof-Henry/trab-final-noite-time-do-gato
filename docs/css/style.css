@@ -1,0 +1,29 @@
+div.sala-card {
+    display: flex;
+    flex-direction: row;
+}
+
+div.sala-card ul {
+    list-style-type: none;
+}
+
+body > * {
+    border: solid black 1px;
+}
+
+main {
+    min-height: 80%
+}
+
+footer {
+    height: 20%;
+    margin: auto auto 0 auto;
+}
+
+abbr[title] {
+    text-decoration: none !important;
+}
+
+table {
+    margin: auto;
+}
