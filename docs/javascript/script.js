@@ -5,6 +5,7 @@ class Sala {
     numero = "";
     capacidade = "";
     tipo = "";
+    dia = "";
     horario_inicial = "";
     horario_final = "";
     recorrente = "";
@@ -13,6 +14,7 @@ class Sala {
         this.numero = numero;
         this.capacidade = capacidade;
         this.tipo = tipo;
+        this.dia = dia;
         this.horario_inicial = horario_inicial;
         this.horario_final = horario_final;
         this.recorrente = recorrente;
