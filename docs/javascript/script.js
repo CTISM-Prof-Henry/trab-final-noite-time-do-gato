@@ -1,5 +1,8 @@
 // Declara a classe do objeto "sala"
 
+let i;
+var lista_sala = [];
+
 class Sala {
     predio = "";
     numero = "";
@@ -9,7 +12,7 @@ class Sala {
     horario_inicial = "";
     horario_final = "";
     recorrente = "";
-    constructor(predio, numero, capacidade, tipo, horario_inicial, horario_final, recorrente) {
+    constructor(predio, numero, capacidade, tipo, dia, horario_inicial, horario_final, recorrente) {
         this.predio = predio;
         this.numero = numero;
         this.capacidade = capacidade;
@@ -19,4 +22,30 @@ class Sala {
         this.horario_final = horario_final;
         this.recorrente = recorrente;
     }
+}
+
+// Definir alguns objetos para fins de teste
+let a202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
+lista_sala.push(a202);
+let b202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
+lista_sala.push(b202);
+let c202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
+lista_sala.push(c202);
+let d202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
+lista_sala.push(d202);
+let e202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
+lista_sala.push(e202);
+
+// Laço para preencher o arquivo HTML com os dados das salas.
+for (i = 0; i < lista_sala.length; i++) {
+    console.log(lista_sala[0]);
+    let table = document.getElementById("table-body");
+    let row = document.createElement('tr');
+    for (const [key, value] of Object.entries(lista_sala[i])) {
+        let table_data = document.createElement('td');
+        table_data.innerHTML = `${value}`;
+        row.appendChild(table_data);
+        console.log(`${key} : ${value}`);
+    }
+    table.appendChild(row);
 }
