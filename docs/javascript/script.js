@@ -49,3 +49,5 @@ for (i = 0; i < lista_sala.length; i++) {
     }
     table.appendChild(row);
 }
+
+
