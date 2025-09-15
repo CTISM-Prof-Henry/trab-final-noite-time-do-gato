@@ -8,15 +8,29 @@ class Sala {
     numero = "";
     capacidade = "";
     tipo = "";
-    dia = "";
-    horario_inicial = "";
-    horario_final = "";
-    recorrente = "";
-    constructor(predio, numero, capacidade, tipo, dia, horario_inicial, horario_final, recorrente) {
+    constructor(predio, numero, capacidade, tipo) {
         this.predio = predio;
         this.numero = numero;
         this.capacidade = capacidade;
         this.tipo = tipo;
+    }
+}
+
+class SalaReserva extends Sala {
+    predio = "";
+    numero = "";
+    capacidade = "";
+    tipo = "";
+    dia = "";
+    horario_inicial = "";
+    horario_final = "";
+    recorrente = "";
+    constructor(Sala, dia, horario_inicial, horario_final, recorrente) {
+        super(Sala);
+        this.predio = Sala.predio;
+        this.numero = Sala.numero;
+        this.capacidade = Sala.capacidade;
+        this.tipo = Sala.tipo;
         this.dia = dia;
         this.horario_inicial = horario_inicial;
         this.horario_final = horario_final;
@@ -25,27 +39,24 @@ class Sala {
 }
 
 // Definir alguns objetos para fins de teste
-let a202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
-lista_sala.push(a202);
-let b202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
-lista_sala.push(b202);
-let c202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
-lista_sala.push(c202);
-let d202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
-lista_sala.push(d202);
-let e202 = new Sala("A", 202, 30, "Lab", "08/09/2025", "19:00", "23:00", 1);
-lista_sala.push(e202);
+let a202 = new Sala("A", 202, 30, "Lab");
+let b202 = new Sala("A", 202, 30, "Lab",);
+
+let a202_reserva = new SalaReserva(a202, '15/09/2025', '19:00', '23:00', 1);
+lista_sala.push(a202_reserva);
+let b202_reserva = new SalaReserva(b202, '15/09/2025', '19:00', '23:00', 1);
+lista_sala.push(b202_reserva);
 
 // Laço para preencher o arquivo HTML com os dados das salas.
 for (i = 0; i < lista_sala.length; i++) {
-    console.log(lista_sala[0]);
+    //console.log(lista_sala[0]);
     let table = document.getElementById("table-body");
     let row = document.createElement('tr');
     for (const [key, value] of Object.entries(lista_sala[i])) {
         let table_data = document.createElement('td');
         table_data.innerHTML = `${value}`;
         row.appendChild(table_data);
-        console.log(`${key} : ${value}`);
+        //console.log(`${key} : ${value}`);
     }
     table.appendChild(row);
 }
