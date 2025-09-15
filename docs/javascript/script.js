@@ -39,13 +39,31 @@ class SalaReserva extends Sala {
 }
 
 // Definir alguns objetos para fins de teste
-let a202 = new Sala("A", 202, 30, "Lab");
-let b202 = new Sala("A", 202, 30, "Lab",);
+/*let a202 = new Sala("A", 202, 30, "Lab");
+let b203 = new Sala("B", 203, 30, "Lab",);
 
 let a202_reserva = new SalaReserva(a202, '15/09/2025', '19:00', '23:00', 1);
 lista_sala.push(a202_reserva);
-let b202_reserva = new SalaReserva(b202, '15/09/2025', '19:00', '23:00', 1);
-lista_sala.push(b202_reserva);
+let b203_reserva = new SalaReserva(b203, '15/09/2025', '19:00', '23:00', 1);
+lista_sala.push(b203_reserva);*/
+
+// Cadastrar sala
+
+function cadastrar_sala(event) {
+    event.preventDefault();
+    let predio = document.getElementById("predios").value;
+    let numero = document.getElementById("numero").value;
+    let capacidade = document.getElementById("capacidade").value;
+    let tipo = document.getElementById("tipo").value;
+    let sala = new Sala(predio, numero, capacidade, tipo);
+    let jsonString = JSON.stringify(sala);
+    let name = sala.predio.toString() + sala.numero.toString();
+    localStorage.setItem(name.toString(), jsonString);
+    console.log("Sucesso");
+}
+
+document.getElementById("botao-cadastro").addEventListener('click', cadastrar_sala);
+
 
 // Laço para preencher o arquivo HTML com os dados das salas.
 for (i = 0; i < lista_sala.length; i++) {
