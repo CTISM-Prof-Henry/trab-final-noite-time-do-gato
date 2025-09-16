@@ -55,28 +55,19 @@ function cadastrar_sala(event) {
     let numero = document.getElementById("numero").value;
     let capacidade = document.getElementById("capacidade").value;
     let tipo = document.getElementById("tipo").value;
-    let sala = new Sala(predio, numero, capacidade, tipo);
-    let jsonString = JSON.stringify(sala);
-    let name = sala.predio.toString() + sala.numero.toString();
-    localStorage.setItem(name.toString(), jsonString);
-    console.log("Sucesso");
+    if (numero === "" || capacidade === "") {
+        console.log("Favor preencher todos os valores.") // Adicionar função de alerta de falta de valores
+    } else {
+        let name = predio.toString() + numero.toString();
+        if (localStorage.getItem(name)) {
+            console.log("Sala já cadastrada"); // Adicionar função de alerta para sala já cadastrada
+        } else {
+            let sala = new Sala(predio, numero, capacidade, tipo);
+            let jsonString = JSON.stringify(sala);
+            localStorage.setItem(name.toString(), jsonString);
+            console.log("Sucesso"); // Adicionar função de alerta de sala cadastrada com sucesso
+        }
+    }
 }
 
 document.getElementById("botao-cadastro").addEventListener('click', cadastrar_sala);
-
-
-// Laço para preencher o arquivo HTML com os dados das salas.
-for (i = 0; i < lista_sala.length; i++) {
-    //console.log(lista_sala[0]);
-    let table = document.getElementById("table-body");
-    let row = document.createElement('tr');
-    for (const [key, value] of Object.entries(lista_sala[i])) {
-        let table_data = document.createElement('td');
-        table_data.innerHTML = `${value}`;
-        row.appendChild(table_data);
-        //console.log(`${key} : ${value}`);
-    }
-    table.appendChild(row);
-}
-
-
