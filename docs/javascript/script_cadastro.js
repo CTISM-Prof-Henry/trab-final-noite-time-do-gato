@@ -56,16 +56,16 @@ function cadastrar_sala(event) {
     let capacidade = document.getElementById("capacidade").value;
     let tipo = document.getElementById("tipo").value;
     if (numero === "" || capacidade === "") {
-        console.log("Favor preencher todos os valores.") // Adicionar função de alerta de falta de valores
+        alert("Favor preencher todos os valores.") // Adicionar função de alerta de falta de valores
     } else {
         let name = predio.toString() + numero.toString();
         if (localStorage.getItem(name)) {
-            console.log("Sala já cadastrada"); // Adicionar função de alerta para sala já cadastrada
+            alert("Sala já cadastrada"); // Adicionar função de alerta para sala já cadastrada
         } else {
             let sala = new Sala(predio, numero, capacidade, tipo);
             let jsonString = JSON.stringify(sala);
             localStorage.setItem(name.toString(), jsonString);
-            console.log("Sucesso"); // Adicionar função de alerta de sala cadastrada com sucesso
+            alert("Sucesso"); // Adicionar função de alerta de sala cadastrada com sucesso
         }
     }
 }
