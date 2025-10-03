@@ -1,17 +1,28 @@
-# Welcome to MkDocs
+# Agendamento de Salas
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Este serviço permite agendar salas e laboratórios, cadastrar novas, listar as disponíveis e as agendadas pelo usuário.
 
-## Commands
+## Usuários
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+O público-alvo deste serviço são professores do Colégio Politécnico. Cada usuário pode visualizar as salas disponíveis, agendar e cancelar agendamentos, e visualizar seus agendamentos.
 
-## Project layout
+## Serviços
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+### Agendamento
+
+Usuários podem agendar um sala ou laboratório. Para tanto, devem selecionar alguma sala disponível, selecionar algum período disponível e indicar se desejam que tal agendamento seja recorrente ou não.
+
+### Cadastro
+
+Qualquer usuário ou administrador pode cadastrar uma nova sala, devendo informar os seguintes dados:
+
+- Prédio;
+- Número;
+- Capacidade;
+- Tipo
+
+Somente administradores podem apagar registros existentes de salas. Não é possível cadastrar uma combinação de prédio/sala existente.
+
+### Listagem
+
+É possível listar tanto as salas disponíveis para agendamento quanto as já agendadas pelo usuário.
