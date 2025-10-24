@@ -2,6 +2,10 @@
 
 Este serviço permite agendar salas e laboratórios, cadastrar novas salas, listar as salas disponíveis, e ver as salas agendadas pelo usuário.
 
+## Uso
+
+O serviço pode ser acessado diretamente no navegador, não é necessária a instalação de qualquer programa.
+
 ## Usuários
 
 O público-alvo deste serviço são professores do Colégio Politécnico. Cada usuário pode visualizar as salas disponíveis, agendar e cancelar agendamentos e visualizar seus agendamentos.
