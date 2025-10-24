@@ -1,37 +1,5 @@
-class Sala {
-    predio = "";
-    numero = "";
-    capacidade = "";
-    tipo = "";
-    constructor(predio, numero, capacidade, tipo) {
-        this.predio = predio;
-        this.numero = numero;
-        this.capacidade = capacidade;
-        this.tipo = tipo;
-    }
-}
-
-class SalaReserva extends Sala {
-    predio = "";
-    numero = "";
-    capacidade = "";
-    tipo = "";
-    dia = "";
-    horario_inicial = "";
-    horario_final = "";
-    recorrente = "";
-    constructor(Sala, dia, horario_inicial, horario_final, recorrente) {
-        super(Sala);
-        this.predio = Sala.predio;
-        this.numero = Sala.numero;
-        this.capacidade = Sala.capacidade;
-        this.tipo = Sala.tipo;
-        this.dia = dia;
-        this.horario_inicial = horario_inicial;
-        this.horario_final = horario_final;
-        this.recorrente = recorrente;
-    }
-}
+import Sala from "./script_cadastro.js";
+import SalaReserva from "./script_cadastro.js";
 
 // Dados para teste
 let a101 = new Sala('A', 101, 30, "Lab");
@@ -41,6 +9,8 @@ localStorage.clear();
 localStorage.setItem("a101", JSON.stringify(a101));
 localStorage.setItem("a101", JSON.stringify(a101_reserva));
 localStorage.setItem("b101", JSON.stringify(b101));
+
+let i;
 
 // Laço para preencher o arquivo HTML com os dados das salas.
 for (i = 0; i < localStorage.length; i++) {

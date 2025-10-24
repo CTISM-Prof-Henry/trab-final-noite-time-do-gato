@@ -1,7 +1,6 @@
 // Declara a classe do objeto "sala"
 
-let i;
-var lista_sala = [];
+/*let lista_sala = [];*/
 
 class Sala {
     predio = "";
@@ -16,7 +15,8 @@ class Sala {
     }
 }
 
-class SalaReserva extends Sala {
+/* Utilizar mais tarde */
+/*class SalaReserva extends Sala {
     predio = "";
     numero = "";
     capacidade = "";
@@ -36,7 +36,7 @@ class SalaReserva extends Sala {
         this.horario_final = horario_final;
         this.recorrente = recorrente;
     }
-}
+}*/
 
 // Definir alguns objetos para fins de teste
 /*let a202 = new Sala("A", 202, 30, "Lab");
