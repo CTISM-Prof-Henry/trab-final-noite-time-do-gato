@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="stylesheet" href="../css/style.css">
+        <title>Salas</title>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="col-2">Salas</div>
+                    <div class="col-2">Início</div>
+                    <div class="col-2">Login</div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <!--<div class="container">
+                <div class="row">
+                    <div class="col-4 sala-card">
+                        <div>Lab</div>
+                        <div>
+                            <ul>
+                                <li>C101</li>
+                                <li>30</li
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </main>
+        <footer>
+            <a href="minhas-salas.html">Minhas Salas</a>
+            <button id="botao_cadastrar_sala">Cadastrar nova sala.</button>
+            <div class="modal" id="cadastro_sala">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <form action="">
+                        <label for="predios">Prédio</label>
+                        <select name="predios" id="predios">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>
+                        <br>
+                        <label for="numero">Número</label>
+                        <input id="numero" type="number">
+                        <br>
+                        <label for="capacidade">Capacidade</label>
+                        <input id="capacidade" type="number">
+                        <br>
+                        <label for="tipo">Tipo</label>
+                        <select name="tipo" id="tipo">
+                            <option value="lab">Laboratório</option>
+                            <option value="sala">Sala</option>
+                        </select>
+                    </form>
+                    <button type="button" id="botao-cadastro">Cadastrar</button>
+                </div>
+            </div>
+        </footer>
+    </body>
+    <script src="../javascript/script_cadastro.js"></script>
+    <script src="../javascript/script-index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</html>
