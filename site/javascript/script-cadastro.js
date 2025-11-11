@@ -43,6 +43,47 @@ function criar_db(dbName) {
     }
 }
 
+/* Função para mostrar as salas registradas */
+/* Melhorar código se possível */
+
+function escrever_salas() {
+    let dbName = "salasDB";
+    const request = indexedDB.open(dbName, 2);
+
+    request.onsuccess = (event) => {
+        const db = event.target.result;
+        const transaction = db.transaction("salas", "readonly");
+        const objectStore = transaction.objectStore("salas");
+
+        const getAllRequest = objectStore.getAll();
+
+        getAllRequest.onsuccess = (event)=> {
+            console.log("Sucesso!");
+            let table = document.getElementById("table-salas");
+            const allValues = event.target.result;
+            for (const item of allValues) {
+                let row = document.createElement("tr");
+                let table_data_1 = document.createElement("td");
+                let table_data_2 = document.createElement("td");
+                let table_data_3 = document.createElement("td");
+                table_data_1.innerHTML = item.id;
+                table_data_2.innerHTML = item.capacidade;
+                if (item.tipo === "lab") {
+                    table_data_3.innerHTML = "Laboratório";
+                } else {
+                    table_data_3.innerHTML = "Sala";
+                }
+                row.appendChild(table_data_1);
+                row.appendChild(table_data_2);
+                row.appendChild(table_data_3);
+                console.log(item.id);
+                console.log(1);
+                table.appendChild(row);
+            }
+        };
+    }
+}
+
 function recuperar_sala(predio, numero) {
     return new Promise((resolve, reject) => {
         const transaction = db.transaction(["salas"]);
@@ -98,7 +139,6 @@ function cadastrar_sala(event) {
         });
     }
 }
-
 /* Cadastro de usuários */
 
 function recuperar_usuario(matricula) {
@@ -153,5 +193,6 @@ function cadastrar_usuario(event) {
 
 // carrega o banco de dados depois que a página carregar por completo
 document.addEventListener('DOMContentLoaded', () => criar_db("salasDB"));
+document.addEventListener('DOMContentLoaded', () => escrever_salas());
 document.getElementById("botao-cadastro-sala").addEventListener('click', cadastrar_sala);
 document.getElementById("botao-cadastro-usuario").addEventListener('click', cadastrar_usuario);
