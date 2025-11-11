@@ -2,6 +2,8 @@
 // Não está sendo possível importar a classe no momento. Arrumar e remover a classe “Sala” deste script.
 
 // ponteiro para o banco de dados
+/* Cadasto de salas */
+
 let db = null;
 
 function criar_db(dbName) {
@@ -24,6 +26,13 @@ function criar_db(dbName) {
             }
         );
         objectStore.createIndex("predio_sala_idx", ["predio", "numero"], { unique: true });
+
+        let objectStoreUser = db.createObjectStore(
+            "usuarios", {
+                keyPath: "matricula"  // usa o campo matricula como chave
+            }
+        );
+        objectStoreUser.createIndex("usuario_id", "matricula", { unique: true });
         console.log("Atualização do banco de dados pronta!");
     };
 
@@ -90,6 +99,59 @@ function cadastrar_sala(event) {
     }
 }
 
+/* Cadastro de usuários */
+
+function recuperar_usuario(matricula) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(["usuarios"]);
+        const objectStore = transaction.objectStore("usuarios");
+        const index = objectStore.index("usuario_id");
+        const request = index.get(matricula);
+
+        request.onerror = (event) => {
+            console.log(`Erro ao recuperar usuário: ${event.target.message}`);
+            reject(event.target.error);
+        };
+
+        request.onsuccess = ((event) => {
+            if (request.result) {
+                resolve(request.result); // usuário encontrado encontrado
+            } else {
+                resolve(null); // usuário não encontrado
+            }
+        });
+    });
+}
+
+function cadastrar_usuario(event) {
+    
+    event.preventDefault();
+    let matricula = document.getElementById("matricula").value;
+    let nome = document.getElementById("nome").value;
+    let cargo = document.getElementById("cargo").value;
+
+    const obj = {
+        matricula: matricula,
+        nome: nome,
+        cargo: cargo
+    };
+    if (matricula === "" || nome === "") {
+        alert("Favor preencher todos os valores.") // Adicionar função de alerta de falta de valores
+    } else {
+        recuperar_usuario(matricula).then((usuarioExistente) => {
+            if (usuarioExistente) {
+                alert("Usuário existente.");
+            } else {
+                const transaction = db.transaction("usuarios", "readwrite");
+                const objectStore = transaction.objectStore("usuarios");
+                objectStore.add(obj);
+                alert("Usuário cadastrado com sucesso!");
+            }
+        });
+    }
+}
+
 // carrega o banco de dados depois que a página carregar por completo
 document.addEventListener('DOMContentLoaded', () => criar_db("salasDB"));
-document.getElementById("botao-cadastro").addEventListener('click', cadastrar_sala);
+document.getElementById("botao-cadastro-sala").addEventListener('click', cadastrar_sala);
+document.getElementById("botao-cadastro-usuario").addEventListener('click', cadastrar_usuario);
