@@ -61,8 +61,10 @@ function escrever_salas() {
             console.log("Sucesso!");
             let table = document.getElementById("table-salas");
             const allValues = event.target.result;
+            console.log(allValues.length);
             for (const item of allValues) {
                 let row = document.createElement("tr");
+                row.setAttribute("id", item.id);
                 let table_data_1 = document.createElement("td");
                 let table_data_2 = document.createElement("td");
                 let table_data_3 = document.createElement("td");
@@ -76,8 +78,14 @@ function escrever_salas() {
                 row.appendChild(table_data_1);
                 row.appendChild(table_data_2);
                 row.appendChild(table_data_3);
-                console.log(item.id);
-                console.log(1);
+                let i;
+                for (i=0; i <= 5; i++) {
+                    if (item.reservas[i] === "" || item.reservas[i] === null) {                       
+                        let td_last = document.createElement("button");
+                        td_last.innerHTML = "Disponível";
+                        row.appendChild(td_last);
+                    }
+                }
                 table.appendChild(row);
             }
         };
@@ -122,7 +130,8 @@ function cadastrar_sala(event) {
         predio: predio,
         numero: numero,
         capacidade: capacidade,
-        tipo: tipo
+        tipo: tipo,
+        reservas: ["", "", "", "", "", ""]
     };
     if (numero === "" || capacidade === "") {
         alert("Favor preencher todos os valores.") // Adicionar função de alerta de falta de valores
