@@ -26,6 +26,10 @@ function criar_db(dbName) {
 		objectStore.createIndex("predio_sala_idx", ["predio", "numero"], {
 			unique: true,
 		});
+		
+		objectStore.createIndex("sala_id", "id", {
+			unique: true,
+		});
 
 		let objectStoreUser = db.createObjectStore("usuarios", {
 			keyPath: "matricula", // usa o campo matricula como chave
@@ -62,7 +66,6 @@ function escrever_salas() {
 			console.log(allValues.length);
 			for (const item of allValues) {
 				let row = document.createElement("tr");
-				row.setAttribute("id", item.id);
 				let table_data_1 = document.createElement("td");
 				let table_data_2 = document.createElement("td");
 				let table_data_3 = document.createElement("td");
@@ -76,14 +79,11 @@ function escrever_salas() {
 				row.appendChild(table_data_1);
 				row.appendChild(table_data_2);
 				row.appendChild(table_data_3);
-				let i;
-				for (i = 0; i <= 5; i++) {
-					if (item.reservas[i] === "" || item.reservas[i] === null) {
-						let td_last = document.createElement("button");
-						td_last.innerHTML = "Disponível";
-						row.appendChild(td_last);
-					}
-				}
+				let td_last = document.createElement("button");
+				td_last.innerHTML = "Reservar";
+				td_last.setAttribute("id", item.id);
+				td_last.setAttribute("onclick", "mostrar_reservas(\"" + item.id + "\")");
+				row.appendChild(td_last);
 				table.appendChild(row);
 			}
 		};
@@ -242,6 +242,37 @@ function mostrar_usuario_logado() {
 function sair() {
 	localStorage.removeItem("usuario_atual");
 	mostrar_usuario_logado();
+}
+
+/* Função para mostrar as reservas das salas em uma janela modal */
+
+function mostrar_reservas(sala_id) {
+		let dbName = "salasDB";
+		const request = indexedDB.open(dbName, 2);
+
+		request.onsuccess = (event) => {
+			const db = event.target.result;
+
+			const transaction = db.transaction(["salas"]);
+			const objectStore = transaction.objectStore("salas");
+			const index = objectStore.index("sala_id");
+			const requestSala = index.get(sala_id);
+
+			requestSala.onerror = () => {
+				console.log("Sala inexiste.");
+			}
+
+			requestSala.onsuccess = () => {
+				document.getElementById("sala_id").innerHTML = requestSala.result.id;
+				document.getElementById("sala_capacidade").innerHTML = requestSala.result.capacidade;
+				document.getElementById("sala_tipo").innerHTML = requestSala.result.tipo;
+				console.log(requestSala.result.id);		
+
+				/* Mostre as reservas no dia */
+
+				
+			}
+		};
 }
 
 // carrega o banco de dados depois que a página carregar por completo
