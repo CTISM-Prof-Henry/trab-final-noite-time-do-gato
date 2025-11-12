@@ -26,7 +26,7 @@ function criar_db(dbName) {
 		objectStore.createIndex("predio_sala_idx", ["predio", "numero"], {
 			unique: true,
 		});
-		
+
 		objectStore.createIndex("sala_id", "id", {
 			unique: true,
 		});
@@ -82,7 +82,7 @@ function escrever_salas() {
 				let td_last = document.createElement("button");
 				td_last.innerHTML = "Reservar";
 				td_last.setAttribute("id", item.id);
-				td_last.setAttribute("onclick", "mostrar_reservas(\"" + item.id + "\")");
+				td_last.setAttribute("onclick", 'mostrar_reservas("' + item.id + '")');
 				row.appendChild(td_last);
 				table.appendChild(row);
 			}
@@ -129,7 +129,7 @@ function cadastrar_sala(event) {
 		numero: numero,
 		capacidade: capacidade,
 		tipo: tipo,
-		reservas: ["", "", "", "", "", ""],
+		reservas: [],
 	};
 	if (numero === "" || capacidade === "") {
 		alert("Favor preencher todos os valores."); // Adicionar função de alerta de falta de valores
@@ -247,32 +247,128 @@ function sair() {
 /* Função para mostrar as reservas das salas em uma janela modal */
 
 function mostrar_reservas(sala_id) {
-		let dbName = "salasDB";
-		const request = indexedDB.open(dbName, 2);
+	let dbName = "salasDB";
+	const request = indexedDB.open(dbName, 2);
 
-		request.onsuccess = (event) => {
-			const db = event.target.result;
+	request.onsuccess = (event) => {
+		const db = event.target.result;
 
-			const transaction = db.transaction(["salas"]);
-			const objectStore = transaction.objectStore("salas");
-			const index = objectStore.index("sala_id");
-			const requestSala = index.get(sala_id);
+		const transaction = db.transaction(["salas"]);
+		const objectStore = transaction.objectStore("salas");
+		const index = objectStore.index("sala_id");
+		const requestSala = index.get(sala_id);
 
-			requestSala.onerror = () => {
-				console.log("Sala inexiste.");
-			}
+		requestSala.onerror = () => {
+			console.log("Sala inexiste.");
+		};
 
-			requestSala.onsuccess = () => {
-				document.getElementById("sala_id").innerHTML = requestSala.result.id;
-				document.getElementById("sala_capacidade").innerHTML = requestSala.result.capacidade;
-				document.getElementById("sala_tipo").innerHTML = requestSala.result.tipo;
-				console.log(requestSala.result.id);		
+		requestSala.onsuccess = () => {
+			document.getElementById("sala_id").innerHTML = requestSala.result.id;
+			document.getElementById("sala_capacidade").innerHTML =
+				requestSala.result.capacidade;
+			document.getElementById("sala_tipo").innerHTML = requestSala.result.tipo;
+			let data_reserva = document.getElementById("data_reserva").value;
+			let i;
+			let j;
+			let div = document.createElement("div");
+			let div_resultado = document.getElementById("resultado");
+			let resultados = document.getElementsByClassName("reserva");
+			for (i = 0; i < requestSala.result.reservas.length; i++) {
+				j = 0;
+				if (requestSala.result.reservas[i].data === "2026-01-01") {
+					for (const [key, value] of Object.entries(requestSala.result.reservas[i])) {
+						if (key === "data") {
+							console.log("Data");
+						} else {
+							let professor = resultados[j].querySelector('.professor');
+							let recorrente = resultados[j].querySelector('.recorrente');
+							let cancelar = resultados[j].querySelector('.cancelar');
+							if (value[0] === null || value[0] === undefined) {
+								professor.innerHTML = "Disponível";
+								cancelar.innerHTML = "Reservar";
+								j++;
+							} else {
+								professor.innerHTML = value[0];
+								if (value[1] === 1) {
+									recorrente.innerHTML = "Sim";
+								} else {
+									recorrente.innerHTML = "Não";
+								}
+								cancelar.innerHTML = "Cancelar";
+								j++;
+							}
+						}
+					}
+				}
 
 				/* Mostre as reservas no dia */
-
-				
 			}
 		};
+	};
+}
+
+/* Função para atualizar dados, usada para definir reservas */
+function fazer_reserva(sala_id) {
+	let dbName = "salasDB";
+	const request = indexedDB.open(dbName, 2);
+
+	request.onsuccess = (event) => {
+		const db = event.target.result;
+
+		const transaction = db.transaction(["salas"], "readwrite");
+		const objectStore = transaction.objectStore("salas");
+		const index = objectStore.index("sala_id");
+		const requestSala = index.get(sala_id);
+
+		requestSala.onerror = () => {
+			console.log("Sala inexiste.");
+		};
+
+		requestSala.onsuccess = () => {
+			const data = requestSala.result;
+			data.reservas[0] = {
+				data: "2026-01-01",
+				turno1: ["01822347033", 1],
+				turno2: ["01822347033", 1],
+				turno3: ["123456789", 0],
+				turno4: ["123456789", 0],
+				turno5: [],
+				turno6: [],
+			};
+			data.reservas[1] = {
+				data: "2026-01-02",
+				turno1: ["123456789", 1],
+				turno2: ["123456789", 1],
+				turno3: ["01822347033", 0],
+				turno4: ["01822347033", 0],
+				turno5: [],
+				turno6: [],
+			};
+			data.reservas[2] = {
+				data: "2026-01-03",
+				turno1: [],
+				turno2: [],
+				turno3: [],
+				turno4: [],
+				turno5: ["01822347033", 0],
+				turno6: ["01822347033", 0],
+			};
+
+			const updateRequest = objectStore.put(data);
+			updateRequest.onsuccess = (event) => {
+				console.log("Record updated successfully!");
+			};
+		};
+	};
+}
+
+
+document.getElementById("conferir_reservas").addEventListener("click", conferir);
+
+function conferir() {
+	let sala_id = document.getElementById('sala_id').value;
+	console.log(sala_id);
+	mostrar_reservas(sala_id);
 }
 
 // carrega o banco de dados depois que a página carregar por completo
