@@ -267,42 +267,56 @@ function mostrar_reservas(sala_id) {
 			document.getElementById("sala_capacidade").innerHTML =
 				requestSala.result.capacidade;
 			document.getElementById("sala_tipo").innerHTML = requestSala.result.tipo;
-			let data_reserva = document.getElementById("data_reserva").value;
-			let i;
-			let j;
-			let div = document.createElement("div");
-			let div_resultado = document.getElementById("resultado");
+			let data_reserva = create_date(document.getElementById("data_reserva").value);
+			let i = requestSala.result.reservas.findIndex(e => e.data === data_reserva);
+			let j = 0;
 			let resultados = document.getElementsByClassName("reserva");
-			for (i = 0; i < requestSala.result.reservas.length; i++) {
-				j = 0;
-				if (requestSala.result.reservas[i].data === "2026-01-01") {
-					for (const [key, value] of Object.entries(requestSala.result.reservas[i])) {
-						if (key === "data") {
-							console.log("Data");
+			//if (requestSala.result.reservas[i].data === data_reserva) {
+			if (requestSala.result.reservas.some(e => e.data === data_reserva)) {
+				document.getElementById("resultado").style.display = "none";
+				for (const [key, value] of Object.entries(requestSala.result.reservas[i])) {
+					if (key !== "data") {
+						let professor = resultados[j].querySelector('.professor');
+						let recorrente = resultados[j].querySelector('.recorrente');
+						let cancelar = resultados[j].querySelector('.cancelar');
+						let button_action = document.createElement("button");
+						if (value[0] === null || value[0] === undefined) {
+							professor.innerHTML = "Disponível";
+							cancelar.innerHTML = "Reservar";
+							recorrente.innerHTML = "";
+							j++;
 						} else {
-							let professor = resultados[j].querySelector('.professor');
-							let recorrente = resultados[j].querySelector('.recorrente');
-							let cancelar = resultados[j].querySelector('.cancelar');
-							if (value[0] === null || value[0] === undefined) {
-								professor.innerHTML = "Disponível";
-								cancelar.innerHTML = "Reservar";
-								j++;
-							} else {
-								professor.innerHTML = value[0];
-								if (value[1] === 1) {
-									recorrente.innerHTML = "Sim";
-								} else {
-									recorrente.innerHTML = "Não";
-								}
-								cancelar.innerHTML = "Cancelar";
-								j++;
+							professor.innerHTML = value[0];
+							if (value[1]) {
+								console.log("Sim");
+								recorrente.innerHTML = "Sim";
+							} else if (!value[1]) {
+								console.log("Não");
+								recorrente.innerHTML = "Não";
+							} else if (value[1] === null || value[1] === undefined) {
+								console.log("Null");
+								recorrente.innerHTML = "";
 							}
+							cancelar.innerHTML = "Cancelar";
+							j++;
 						}
 					}
 				}
-
-				/* Mostre as reservas no dia */
+			} else if (!requestSala.result.reservas.some(e => e.data === data_reserva)) {
+				document.getElementById("resultado").style.display = "none";
+				console.log(resultados.length);
+				for (j=0; j < 6; j++) {
+					let professor = resultados[j].querySelector('.professor');
+					let recorrente = resultados[j].querySelector('.recorrente');
+					let cancelar = resultados[j].querySelector('.cancelar');
+					professor.innerHTML = "Disponível";
+					recorrente.innerHTML = "";
+					cancelar.innerHTML = "Reservar";
+				}
 			}
+			document.getElementById("resultado").style.display = "block";
+
+			/* Mostre as reservas no dia */
 		};
 	};
 }
@@ -326,8 +340,12 @@ function fazer_reserva(sala_id) {
 
 		requestSala.onsuccess = () => {
 			const data = requestSala.result;
+			let data1 = create_date("2026-01-01");
+			let data2 = create_date("2026-01-02");
+			let data3 = create_date("2026-01-03");
+			let data4 = create_date("2026-01-04");
 			data.reservas[0] = {
-				data: "2026-01-01",
+				data: data1,
 				turno1: ["01822347033", 1],
 				turno2: ["01822347033", 1],
 				turno3: ["123456789", 0],
@@ -336,7 +354,7 @@ function fazer_reserva(sala_id) {
 				turno6: [],
 			};
 			data.reservas[1] = {
-				data: "2026-01-02",
+				data: data2,
 				turno1: ["123456789", 1],
 				turno2: ["123456789", 1],
 				turno3: ["01822347033", 0],
@@ -345,13 +363,22 @@ function fazer_reserva(sala_id) {
 				turno6: [],
 			};
 			data.reservas[2] = {
-				data: "2026-01-03",
+				data: data3,
 				turno1: [],
 				turno2: [],
 				turno3: [],
 				turno4: [],
 				turno5: ["01822347033", 0],
 				turno6: ["01822347033", 0],
+			};
+			data.reservas[3] = {
+				data: data4,
+				turno1: [],
+				turno2: [],
+				turno3: ["01822347033", 0],
+				turno4: ["01822347033", 0],
+				turno5: [],
+				turno6: [],
 			};
 
 			const updateRequest = objectStore.put(data);
@@ -369,6 +396,22 @@ function conferir() {
 	let sala_id = document.getElementById('sala_id').value;
 	console.log(sala_id);
 	mostrar_reservas(sala_id);
+}
+
+/* Função para criar data */
+
+function create_date(data_string) {
+	let data = new Date(data_string);
+	data.setHours(data.getHours() + 3);
+	data_string = data.toISOString().split("T");
+	return data_string[0];
+}
+
+function increment_date(data_string) {
+	let data = new Date(data_string);
+	data.setHours(data.getHours( 24 * 7 ));
+	data_string = data.toISOString().split("T");
+	return data_string[0];
 }
 
 // carrega o banco de dados depois que a página carregar por completo

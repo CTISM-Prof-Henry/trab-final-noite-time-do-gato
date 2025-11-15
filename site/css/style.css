@@ -28,6 +28,10 @@ table {
     margin: auto;
 }
 
+table tr.reserva td {
+  padding-left: 1.5em;
+}
+
 /* CSS para tela de cadastro de sala */
 
 .modal {
