@@ -14,13 +14,64 @@
     <header>
         <div class="container">
             <div class="row">
-                <div class="col-2">Salas</div>
-                <div class="col-2">Início</div>
+                <div class="mb3">
+                    <button id="botao_cadastrar_sala">Cadastrar nova sala.</button>
+                    <div class="modal" id="cadastro_sala">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form action="">
+                            <label for="predios">Prédio</label>
+                            <select name="predios" id="predios">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                            </select>
+                            <br>
+                            <label for="numero">Número</label>
+                            <input id="numero" type="number">
+                            <br>
+                            <label for="capacidade">Capacidade</label>
+                            <input id="capacidade" type="number">
+                            <br>
+                            <label for="tipo">Tipo</label>
+                            <select name="tipo" id="tipo">
+                                <option value="lab">Laboratório</option>
+                                <option value="sala">Sala</option>
+                            </select>
+                        </form>
+                        <button type="button" id="botao-cadastro-sala">Cadastrar</button>
+                    </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <button id="botao_cadastrar_usuario">Cadastrar novo usuário.</button>
+                    <div class="modal" id="cadastro_usuario">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form action="">
+                            <label for="cargo">Cargo</label>
+                            <select name="cargos" id="cargo">
+                                <option value="professor">Professor</option>
+                            </select>
+                            <br>
+                            <label for="nome">Nome</label>
+                            <input id="nome" type="text">
+                            <br>
+                            <label for="matricula">Matricula</label>
+                            <input id="matricula" type="number">
+                        </form>
+                        <button type="button" id="botao-cadastro-usuario">Cadastrar</button>
+                    </div>
+                    </div>
+                </div>
                 <div id="div_user_logado" style="display: none;" class="col-2">
                     <div id="nome_usuario"></div>
                     <div><button id="usuario_logado_sair">Sair</button></div>
                 </div>
-                <div id="div_user_deslogado"  style="display: block;" class="col-2">
+                <div id="div_user_deslogado" style="display: block;" class="col-2">
                     <button href="" id="botao_janela_login">Login</button>
                     <div class="modal" id="modal_login">
                         <div class="modal-content">
@@ -36,105 +87,61 @@
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
     </header>
     <main>
         <table id="table-salas">
-            
+
         </table>
-        <div class="modal1" id="modal_reserva">
+        <div class="modal" id="modal_reserva">
             <div class="modal-content">
-                <div id="sala_id">Sala</div>
-                <div id="sala_capacidade">Capacidade</div>
-                <div id="sala_tipo">Tipo</div>
+                <span class="close">&times;</span>
+                <div class="center" id="sala_id">Sala</div>
+                <div class="center" id="sala_capacidade">Capacidade</div>
+                <div class="center" id="sala_tipo">Tipo</div>
                 <input id="data_reserva" type="date" min="2026-01-01" max="2026-12-31" value="2026-01-01">
-                <button id="conferir_reservas">Conferir</button>
-                <div id="resultado">
-                    <div class="reserva">
-                        <div class="professor"></div>
-                        <div class="recorrente"></div>
-                        <div class="cancelar"></div>
-                    </div>
-                    <div class="reserva">
-                        <div class="professor"></div>
-                        <div class="recorrente"></div>
-                        <div class="cancelar"></div>
-                    </div>
-                    <div class="reserva">
-                        <div class="professor"></div>
-                        <div class="recorrente"></div>
-                        <div class="cancelar"></div>
-                    </div>
-                    <div class="reserva">
-                        <div class="professor"></div>
-                        <div class="recorrente"></div>
-                        <div class="cancelar"></div>
-                    </div>
-                    <div class="reserva">
-                        <div class="professor"></div>
-                        <div class="recorrente"></div>
-                        <div class="cancelar"></div>
-                    </div>
-                    <div class="reserva">
-                        <div class="professor"></div>
-                        <div class="recorrente"></div>
-                        <div class="cancelar"></div>
-                    </div>
-                </div>
+                <table id="resultado">
+                    <thead>
+                        <th>Reservar</th>
+                        <th>Professor</th>
+                        <th>Ação</th>
+                    </thead>
+                    <tr class="reserva">
+                        <td><input class="reservar" type="checkbox"></td>
+                        <td class="professor">Disponível</td>
+                        <td class="cancelar"></td>
+                    </tr>
+                    <tr class="reserva">
+                        <td><input class="reservar" type="checkbox"></td>
+                        <td class="professor">Disponível</td>
+                        <td class="cancelar"></td>
+                    </tr>
+                    <tr class="reserva">
+                        <td><input class="reservar" type="checkbox"></td>
+                        <td class="professor">Disponível</td>
+                        <td class="cancelar"></td>
+                    </tr>
+                    <tr class="reserva">
+                        <td><input class="reservar" type="checkbox"></td>
+                        <td class="professor">Disponível</td>
+                        <td class="cancelar"></td>
+                    </tr>
+                    <tr class="reserva">
+                        <td><input class="reservar" type="checkbox"></td>
+                        <td class="professor">Disponível</td>
+                        <td class="cancelar"></td>
+                    </tr>
+                    <tr class="reserva">
+                        <td><input class="reservar" type="checkbox" value="false"></td>
+                        <td class="professor">Disponível</td>
+                        <td class="cancelar"></td>
+                    </tr>
+                </table>
+                <button id="confirmar_reserva">Confirmar reserva</button>
             </div>
         </div>
     </main>
     <footer>
-        <a href="minhas-salas.html">Minhas Salas</a>
-        <button id="botao_cadastrar_sala">Cadastrar nova sala.</button>
-        <div class="modal" id="cadastro_sala">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <form action="">
-                    <label for="predios">Prédio</label>
-                    <select name="predios" id="predios">
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                        <option value="F">F</option>
-                    </select>
-                    <br>
-                    <label for="numero">Número</label>
-                    <input id="numero" type="number">
-                    <br>
-                    <label for="capacidade">Capacidade</label>
-                    <input id="capacidade" type="number">
-                    <br>
-                    <label for="tipo">Tipo</label>
-                    <select name="tipo" id="tipo">
-                        <option value="lab">Laboratório</option>
-                        <option value="sala">Sala</option>
-                    </select>
-                </form>
-                <button type="button" id="botao-cadastro-sala">Cadastrar</button>
-            </div>
-        </div>
-        <button id="botao_cadastrar_usuario">Cadastrar novo usuário.</button>
-        <div class="modal" id="cadastro_usuario">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <form action="">
-                    <label for="cargo">Cargo</label>
-                    <select name="cargos" id="cargo">
-                        <option value="professor">Professor</option>
-                    </select>
-                    <br>
-                    <label for="nome">Nome</label>
-                    <input id="nome" type="text">
-                    <br>
-                    <label for="matricula">Matricula</label>
-                    <input id="matricula" type="number">
-                </form>
-                <button type="button" id="botao-cadastro-usuario">Cadastrar</button>
-            </div>
-        </div>
     </footer>
 </body>
 <script src="../javascript/script-cadastro.js"></script>

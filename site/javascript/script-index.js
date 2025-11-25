@@ -14,6 +14,7 @@ let btn_login = document.getElementById("botao_janela_login");
 let span_sala = document.getElementsByClassName("close")[0];
 let span_usuario = document.getElementsByClassName("close")[1];
 let span_login = document.getElementsByClassName("close")[2];
+let span_reserva = document.getElementsByClassName("close")[3];
 
 // When the user clicks on the button, open the modal
 btn_sala.onclick = function() {
@@ -30,22 +31,27 @@ btn_login.onclick = function() {
 
 // When the user clicks on <span> (x), close the modal
 span_sala.onclick = function() {
-  modal.style.display = "none";
+  modal_sala.style.display = "none";
 }
 
 span_usuario.onclick = function() {
-  modal.style.display = "none";
+  modal_usuario.style.display = "none";
 }
 
 span_login.onclick = function() {
-  modal.style.display = "none";
+  modal_login.style.display = "none";
+}
+
+span_reserva.onclick = function() {
+  modal_reserva.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  if (event.target === modal_sala || event.target === modal_usuario || event.target === modal_login) {
+  if (event.target === modal_sala || event.target === modal_usuario || event.target === modal_login || event.target === modal_reserva) {
     modal_sala.style.display = "none";
     modal_usuario.style.display = "none";
     modal_login.style.display = "none";
+    modal_reserva.style.display = "none";
   }
 } 
