@@ -1,4 +1,4 @@
-import { getDate } from "../script-cadastro.js"
+import { getDate, validaCPF, validaSala } from "../script-cadastro.js"
 
 function testaData(assert) {
     let datas = ["2026-01-01", "2026-05-12", "2026-07-08"];

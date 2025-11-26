@@ -156,3 +156,5 @@ sftp-config.json
 
 # Resultados do Eslint
 eslint-report
+
+/.nyc_output
