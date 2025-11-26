@@ -114,6 +114,17 @@ function recuperar_sala(predio, numero) {
 	});
 }
 
+function validaSala(numero, capacidade) {
+	let regex = /^\d{3}/;
+	if (!regex.test(numero) || numero.length != 3) {
+		return "Erro. O número da sala deve ter apenas três dígitos numéricos.";
+	}
+	if (capacidade < 10 || capacidade > 40) {
+		return "Erro. A capacidade da sala deve ser entre 10 e 40";
+	}
+	return true;
+}
+
 function cadastrar_sala(event) {
 	// TODO essa função não deve criar um banco de dados, deve apenas salvar uma sala.
 	//   não se re-cria o banco de dados a cada nova inserção de dados em uma aplicação!
@@ -124,28 +135,31 @@ function cadastrar_sala(event) {
 	let capacidade = document.getElementById("capacidade").value;
 	let tipo = document.getElementById("tipo").value;
 
-	const name = `${predio.toString()}-${numero.toString()}`;
-	const obj = {
-		id: name,
-		predio: predio,
-		numero: numero,
-		capacidade: capacidade,
-		tipo: tipo,
-		reservas: [],
-	};
-	if (numero === "" || capacidade === "") {
-		alert("Favor preencher todos os valores."); // Adicionar função de alerta de falta de valores
-	} else {
-		recuperar_sala(predio, numero).then((salaExistente) => {
-			if (salaExistente) {
-				alert("Sala já cadastrada.");
-			} else {
-				const transaction = db.transaction("salas", "readwrite");
-				const objectStore = transaction.objectStore("salas");
-				objectStore.add(obj);
-				alert("Sala cadastrada com sucesso!");
-			}
-		});
+	if (validaSala(numero, capacidade)) {
+
+		const name = `${predio.toString()}-${numero.toString()}`;
+		const obj = {
+			id: name,
+			predio: predio,
+			numero: numero,
+			capacidade: capacidade,
+			tipo: tipo,
+			reservas: [],
+		};
+		if (numero === "" || capacidade === "") {
+			alert("Favor preencher todos os valores."); // Adicionar função de alerta de falta de valores
+		} else {
+			recuperar_sala(predio, numero).then((salaExistente) => {
+				if (salaExistente) {
+					alert("Sala já cadastrada.");
+				} else {
+					const transaction = db.transaction("salas", "readwrite");
+					const objectStore = transaction.objectStore("salas");
+					objectStore.add(obj);
+					alert("Sala cadastrada com sucesso!");
+				}
+			});
+		}
 	}
 }
 /* Cadastro de usuários */
@@ -178,38 +192,46 @@ function cadastrar_usuario(event) {
 	let nome = document.getElementById("nome").value;
 	let cargo = document.getElementById("cargo").value;
 
-	const obj = {
-		matricula: matricula,
-		nome: nome,
-		cargo: cargo,
-	};
-	if (matricula === "" || nome === "") {
-		alert("Favor preencher todos os valores."); // Adicionar função de alerta de falta de valores
+	if (validaCPF(matricula)) {
+		const obj = {
+			matricula: matricula,
+			nome: nome,
+			cargo: cargo,
+		};
+		if (matricula === "" || nome === "") {
+			alert("Favor preencher todos os valores."); // Adicionar função de alerta de falta de valores
+		} else {
+			recuperar_usuario(matricula).then((usuarioExistente) => {
+				if (usuarioExistente) {
+					alert("Usuário existente.");
+				} else {
+					const transaction = db.transaction("usuarios", "readwrite");
+					const objectStore = transaction.objectStore("usuarios");
+					objectStore.add(obj);
+					alert("Usuário cadastrado com sucesso!");
+				}
+			});
+		}
 	} else {
-		recuperar_usuario(matricula).then((usuarioExistente) => {
-			if (usuarioExistente) {
-				alert("Usuário existente.");
-			} else {
-				const transaction = db.transaction("usuarios", "readwrite");
-				const objectStore = transaction.objectStore("usuarios");
-				objectStore.add(obj);
-				alert("Usuário cadastrado com sucesso!");
-			}
-		});
+		alert("CPF inválido.");
 	}
 }
 
 /* Função para simular login */
 function fazer_login() {
 	let usuario_informado = document.getElementById("usuario").value;
-	recuperar_usuario(usuario_informado).then((usuarioExistente) => {
-		if (usuarioExistente) {
-			localStorage.setItem("usuario_atual", usuario_informado);
-			mostrar_usuario_logado();
-		} else {
-			alert("Usuário não cadastrado!");
-		}
-	});
+	if (validaCPF(usuario_informado)) {
+		recuperar_usuario(usuario_informado).then((usuarioExistente) => {
+			if (usuarioExistente) {
+				localStorage.setItem("usuario_atual", usuario_informado);
+				mostrar_usuario_logado();
+			} else {
+				alert("Usuário não cadastrado!");
+			}
+		});
+	} else {
+		alert("Login inválido.");
+	}
 }
 
 function mostrar_usuario_logado() {
@@ -244,6 +266,17 @@ function mostrar_usuario_logado() {
 function sair() {
 	localStorage.removeItem("usuario_atual");
 	mostrar_usuario_logado();
+}
+
+/* Função para validar cpf de usuários */
+
+function validaCPF(cpf) {
+	let regex = /^\d+$/;
+	if (cpf.length === 11 && regex.test(cpf)) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /* Função para arrumar data */
