@@ -1,10 +1,53 @@
 {
-  "devDependencies": {
-    "@eslint/css": "^0.13.0",
-    "@eslint/js": "^9.38.0",
-    "@eslint/json": "^0.13.2",
-    "@eslint/markdown": "^7.5.0",
-    "eslint": "^9.38.0",
-    "globals": "^16.4.0"
-  }
+	"name": "trab-final-noite-time-do-gato",
+	"version": "1.0.0",
+	"description": "[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/BJmkW5Ih) # Título do repositório",
+	"homepage": "https://github.com/CTISM-Prof-Henry/trab-final-noite-time-do-gato#readme",
+	"bugs": {
+		"url": "https://github.com/CTISM-Prof-Henry/trab-final-noite-time-do-gato/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CTISM-Prof-Henry/trab-final-noite-time-do-gato.git"
+	},
+	"license": "ISC",
+	"author": "",
+	"type": "commonjs",
+	"main": "index.js",
+	"directories": {
+		"doc": "docs"
+	},
+	"scripts": {
+		"test": "nyc qunit \"site/javascript/test/**/*.js\""
+	},
+	"devDependencies": {
+		"@eslint/css": "^0.13.0",
+		"@eslint/js": "^9.38.0",
+		"@eslint/json": "^0.13.2",
+		"@eslint/markdown": "^7.5.0",
+		"eslint": "^9.38.0",
+		"globals": "^16.4.0",
+		"nyc": "^17.1.0",
+		"qunit": "^2.24.1"
+	},
+	"nyc": {
+		"require": [
+			"@babel/register"
+		],
+		"babel": true,
+		"reporter": [
+			"text",
+			"html"
+		],
+		"include": [
+			"website/static/js/src/**/*.js"
+		],
+		"exclude": [
+			"website/static/js/test/**/*.js"
+		],
+		"all": true,
+		"extension": [
+			".js"
+		]
+	}
 }
