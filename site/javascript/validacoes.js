@@ -1,11 +1,7 @@
 /* Função para validar cpf de usuários */
 export function validaCPF(cpf) {
 	let regex = /^\d+$/;
-	if (cpf.length === 11 && regex.test(cpf)) {
-		return true;
-	} else {
-		return false;
-	}
+	return cpf.length === 11 && regex.test(cpf);
 }
 
 /* Função para arrumar data */
@@ -20,7 +16,7 @@ export function getDate(s) {
 
 export function validaSala(numero, capacidade) {
 	let regex = /^\d{3}/;
-	if (!regex.test(numero) || numero.length != 3) {
+	if (!regex.test(numero) || numero.length !== 3) {
 		return "Erro. O número da sala deve ter apenas três dígitos numéricos.";
 	}
 	if (capacidade < 10 || capacidade > 40) {

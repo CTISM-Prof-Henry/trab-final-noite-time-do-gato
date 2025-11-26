@@ -4,6 +4,7 @@
 let modal_sala = document.getElementById("cadastro_sala");
 let modal_usuario = document.getElementById("cadastro_usuario");
 let modal_login = document.getElementById("modal_login");
+let modal_reserva = document.getElementById("modal_reserva");
 
 // Get the button that opens the modal
 let btn_sala = document.getElementById("botao_cadastrar_sala");

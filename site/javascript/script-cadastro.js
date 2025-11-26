@@ -1,16 +1,13 @@
-import { getDate, validaCPF, validaSala } from "../validacoes.js"
+import { getDate, validaCPF, validaSala } from "./validacoes.js"
 
 // ponteiro para o banco de dados
 /* Cadasto de salas */
-
-const data_final = getDate("2026-12-12");
-
 let db = null;
 
-function criar_db(dbName) {
+export function criar_db(dbName) {
 	const request = indexedDB.open(dbName, 2);
 
-	request.onerror = (event) => {
+	request.onerror = () => {
 		console.log("Erro ao inicializar o banco de dados.");
 	};
 
@@ -49,7 +46,7 @@ function criar_db(dbName) {
 /* Função para mostrar as salas registradas */
 /* Melhorar código se possível */
 
-function escrever_salas() {
+export function escrever_salas() {
 	let dbName = "salasDB";
 	const request = indexedDB.open(dbName, 2);
 
@@ -84,14 +81,15 @@ function escrever_salas() {
 				td_last.innerHTML = "Reservar";
 				td_last.setAttribute("id", item.id);
 				td_last.setAttribute("onclick", 'mostrar_reservas("' + item.id + '")');
-				row.appendChild(td_last);
+                td_last.setAttribute("id", item.id);
+                row.appendChild(td_last);
 				table.appendChild(row);
 			}
 		};
 	};
 }
 
-function recuperar_sala(predio, numero) {
+export function recuperar_sala(predio, numero) {
 	return new Promise((resolve, reject) => {
 		const transaction = db.transaction(["salas"]);
 		const objectStore = transaction.objectStore("salas");
@@ -103,7 +101,7 @@ function recuperar_sala(predio, numero) {
 			reject(event.target.error);
 		};
 
-		request.onsuccess = (event) => {
+		request.onsuccess = () => {
 			if (request.result) {
 				resolve(request.result); // sala encontrada
 			} else {
@@ -115,7 +113,7 @@ function recuperar_sala(predio, numero) {
 
 
 
-function cadastrar_sala(event) {
+export function cadastrar_sala(event) {
 	// TODO essa função não deve criar um banco de dados, deve apenas salvar uma sala.
 	//   não se re-cria o banco de dados a cada nova inserção de dados em uma aplicação!
 
@@ -154,7 +152,7 @@ function cadastrar_sala(event) {
 }
 /* Cadastro de usuários */
 
-function recuperar_usuario(matricula) {
+export function recuperar_usuario(matricula) {
 	return new Promise((resolve, reject) => {
 		const transaction = db.transaction(["usuarios"]);
 		const objectStore = transaction.objectStore("usuarios");
@@ -166,7 +164,7 @@ function recuperar_usuario(matricula) {
 			reject(event.target.error);
 		};
 
-		request.onsuccess = (event) => {
+		request.onsuccess = () => {
 			if (request.result) {
 				resolve(request.result); // usuário encontrado encontrado
 			} else {
@@ -176,7 +174,7 @@ function recuperar_usuario(matricula) {
 	});
 }
 
-function cadastrar_usuario(event) {
+export function cadastrar_usuario(event) {
 	event.preventDefault();
 	let matricula = document.getElementById("matricula").value;
 	let nome = document.getElementById("nome").value;
@@ -208,7 +206,7 @@ function cadastrar_usuario(event) {
 }
 
 /* Função para simular login */
-function fazer_login() {
+export function fazer_login() {
 	let usuario_informado = document.getElementById("usuario").value;
 	if (validaCPF(usuario_informado)) {
 		recuperar_usuario(usuario_informado).then((usuarioExistente) => {
@@ -224,7 +222,7 @@ function fazer_login() {
 	}
 }
 
-function mostrar_usuario_logado() {
+export function mostrar_usuario_logado() {
 	if (
 		localStorage.getItem("usuario_atual") === "" ||
 		localStorage.getItem("usuario_atual") === null
@@ -243,7 +241,7 @@ function mostrar_usuario_logado() {
 			const index = objectStore.index("usuario_id");
 			const request = index.get(localStorage.getItem("usuario_atual"));
 			request.onsuccess = () => {
-				div_nome = document.getElementById("nome_usuario");
+				let div_nome = document.getElementById("nome_usuario");
 				div_nome.innerHTML = request.result.nome;
 
 				document.getElementById("div_user_logado").style.display = "block";
@@ -253,106 +251,106 @@ function mostrar_usuario_logado() {
 	}
 }
 
-function sair() {
+export function sair() {
 	localStorage.removeItem("usuario_atual");
 	mostrar_usuario_logado();
 }
 /* Função para mostrar as reservas das salas em uma janela modal */
 
-function mostrar_reservas(sala_id) {
-	let dbName = "salasDB";
-	const request = indexedDB.open(dbName, 2);
+export function mostrar_reservas(sala_id) {
+    let dbName = "salasDB";
+    const request = indexedDB.open(dbName, 2);
 
-	request.onsuccess = (event) => {
-		const db = event.target.result;
+    request.onsuccess = (event) => {
+        const db = event.target.result;
 
-		const transaction = db.transaction(["salas"]);
-		const objectStore = transaction.objectStore("salas");
-		const index = objectStore.index("sala_id");
-		const requestSala = index.get(sala_id);
+        const transaction = db.transaction(["salas"]);
+        const objectStore = transaction.objectStore("salas");
+        const index = objectStore.index("sala_id");
+        const requestSala = index.get(sala_id);
 
-		let data = getDate(document.getElementById("data_reserva").value);
+        let data = getDate(document.getElementById("data_reserva").value);
 
-		requestSala.onerror = () => {
-			console.log("Sala inexiste.");
-		};
+        requestSala.onerror = () => {
+            console.log("Sala inexiste.");
+        };
 
-		requestSala.onsuccess = () => {
-			document.getElementById("sala_id").innerHTML = requestSala.result.id;
-			document.getElementById("sala_capacidade").innerHTML =
-				requestSala.result.capacidade;
-			document.getElementById("sala_tipo").innerHTML = requestSala.result.tipo;
-			let data_reserva = getDate(document.getElementById("data_reserva").value);
+        requestSala.onsuccess = () => {
+            document.getElementById("sala_id").innerHTML = requestSala.result.id;
+            document.getElementById("sala_capacidade").innerHTML =
+                requestSala.result.capacidade;
+            document.getElementById("sala_tipo").innerHTML = requestSala.result.tipo;
+            let data_reserva = getDate(document.getElementById("data_reserva").value);
 
-			
-			let modal_reserva = document.getElementById("modal_reserva");
-			modal_reserva.style.display = "block";
-			
-			let i;
-			let j;
 
-			let input_recorrente = document.createElement("input");
-			input_recorrente.setAttribute("type", "checkbox");
+            let modal_reserva = document.getElementById("modal_reserva");
+            modal_reserva.style.display = "block";
 
-			let resultados = document.getElementsByClassName("reserva");
-			console.log(resultados.length);
+            let i;
+            let j;
 
-			/* Teste o length das reservas da sala especificada. Caso seja 0, não há reservas, portanto pode ser mostrado o código para fazer uma nova. */
-			if (
-				requestSala.result.reservas.find((x) => x.data === data) === undefined
-			) {
-				for (j = 0; j < resultados.length; j++) {
-					let status = resultados[j].querySelector(".reservar");
-					status.checked = false;
-					status.disabled = false;
-					let professor = resultados[j].querySelector(".professor");
-					professor.innerHTML = "Disponível";
-				}
-			} else {
-				for (i = 0; i < requestSala.result.reservas.length; i++) {
-					j = 0;
-					if (requestSala.result.reservas[i].data === data_reserva) {
-						for (const [key, value] of Object.entries(
-							requestSala.result.reservas[i]
-						)) {
-							if (key === "data") {
-							} else {
-								let status = resultados[j].querySelector(".reservar");
-								let professor = resultados[j].querySelector(".professor");
-								let cancelar = resultados[j].querySelector(".cancelar");
-								if (value === null || value === undefined || value === "") {
-									status.checked = false;
-									status.disabled = false;
-									professor.innerHTML = "Disponível";
-									cancelar.innerHTML = "Reservar";
-									j++;
-								} else {
-									botao_cancelar = document.createElement("button");
-									botao_cancelar.setAttribute(
-										"onclick",
-										'cancelarReserva("turno' + (j + 1) + '")'
-									);
-									botao_cancelar.innerHTML = "Cancelar";
-									status.checked = true;
-									status.disabled = true;
-									professor.innerHTML = value;
-									if (cancelar.innerHTML === "") {
-										cancelar.appendChild(botao_cancelar);
-									}
-									j++;
-								}
-							}
-						}
-					}
-				}
-			}
-		};
-	};
+            let input_recorrente = document.createElement("input");
+            input_recorrente.setAttribute("type", "checkbox");
+
+            let resultados = document.getElementsByClassName("reserva");
+            console.log(resultados.length);
+
+            /* Teste o length das reservas da sala especificada. Caso seja 0, não há reservas, portanto pode ser mostrado o código para fazer uma nova. */
+            if (
+                requestSala.result.reservas.find((x) => x.data === data) === undefined
+            ) {
+                for (j = 0; j < resultados.length; j++) {
+                    let status = resultados[j].querySelector(".reservar");
+                    status.checked = false;
+                    status.disabled = false;
+                    let professor = resultados[j].querySelector(".professor");
+                    professor.innerHTML = "Disponível";
+                }
+            } else {
+                for (i = 0; i < requestSala.result.reservas.length; i++) {
+                    j = 0;
+                    if (requestSala.result.reservas[i].data === data_reserva) {
+                        for (const [key, value] of Object.entries(
+                            requestSala.result.reservas[i]
+                        )) {
+                            if (key !== "data") {
+                                let status = resultados[j].querySelector(".reservar");
+                                let professor = resultados[j].querySelector(".professor");
+                                let cancelar = resultados[j].querySelector(".cancelar");
+                                if (value === null || value === undefined || value === "") {
+                                    status.checked = false;
+                                    status.disabled = false;
+                                    professor.innerHTML = "Disponível";
+                                    cancelar.innerHTML = "Reservar";
+                                    j++;
+                                } else {
+                                    let botao_cancelar = document.createElement("button");
+                                    botao_cancelar.setAttribute(
+                                        "onclick",
+                                        'cancelarReserva("turno' + (j + 1) + '")'
+                                    );
+                                    botao_cancelar.innerHTML = "Cancelar";
+                                    status.checked = true;
+                                    status.disabled = true;
+                                    professor.innerHTML = String(value);
+                                    if (cancelar.innerHTML === "") {
+                                        cancelar.appendChild(botao_cancelar);
+                                    }
+                                    j++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    };
 }
 
 /* Função para cancelar reserva */
 
-function cancelarReserva(n) {
+export function cancelarReserva(n) {
+    let i;
 	n = n.toString;
 	let sala_id = document.getElementById("sala_id").innerHTML;
 	let data_reserva = getDate(document.getElementById("data_reserva").value);
@@ -401,7 +399,7 @@ function cancelarReserva(n) {
 					break;
 			}
 			const updateRequest = objectStore.put(requestSala.result);
-			updateRequest.onsuccess = (event) => {
+			updateRequest.onsuccess = () => {
 				console.log("Record updated successfully!");
 			};
 		};
@@ -409,7 +407,7 @@ function cancelarReserva(n) {
 }
 
 /* Função para atualizar dados, usada para definir reservas */
-function reservar() {
+export function reservar() {
 	let sala_id = document.getElementById("sala_id").innerHTML;
 	let dbName = "salasDB";
 	const request = indexedDB.open(dbName, 2);
@@ -432,8 +430,8 @@ function reservar() {
 			let dados = requestSala.result;
 			let reservas = dados.reservas;
 			let usuario = localStorage.getItem("usuario_atual");
-			var turnos_reservados = document.getElementsByClassName("reservar");
-			let resultados = document.getElementsByClassName("reserva");
+			let turnos_reservados = document.getElementsByClassName("reservar");
+			//let resultados = document.getElementsByClassName("reserva");
 
 			let i;
 
@@ -443,71 +441,78 @@ function reservar() {
 				i = reservas.findIndex((x) => x.data === data);
 			}
 
+            let turno1;
+            let turno2;
+            let turno3;
+            let turno4;
+            let turno5;
+            let turno6;
+
 			/* Melhorar código, usando uma variável como chave */
 			if (turnos_reservados[0].checked && !turnos_reservados[0].disabled) {
-				var turno1 = usuario;
+				turno1 = usuario;
 			} else if (
 				turnos_reservados[0].checked &&
 				turnos_reservados[0].disabled
 			) {
-				var turno1 = reservas[i].turno1;
+				turno1 = reservas[i].turno1;
 			} else {
-				var turno1 = null;
+				turno1 = null;
 			}
 
 			if (turnos_reservados[1].checked && !turnos_reservados[1].disabled) {
-				var turno2 = usuario;
+				turno2 = usuario;
 			} else if (
 				turnos_reservados[1].checked &&
 				turnos_reservados[1].disabled
 			) {
-				var turno2 = reservas[i].turno2;
+				turno2 = reservas[i].turno2;
 			} else {
-				var turno2 = null;
+				turno2 = null;
 			}
 
 			if (turnos_reservados[2].checked && !turnos_reservados[0].disabled) {
-				var turno3 = usuario;
+				turno3 = usuario;
 			} else if (
 				turnos_reservados[2].checked &&
 				turnos_reservados[2].disabled
 			) {
-				var turno3 = reservas[i].turno3;
+				turno3 = reservas[i].turno3;
 			} else {
-				var turno3 = null;
+				turno3 = null;
 			}
 
 			if (turnos_reservados[3].checked && !turnos_reservados[0].disabled) {
-				var turno4 = usuario;
+				turno4 = usuario;
 			} else if (
 				turnos_reservados[3].checked &&
 				turnos_reservados[3].disabled
 			) {
-				var turno4 = reservas[i].turno4;
+				turno4 = reservas[i].turno4;
 			} else {
-				var turno4 = null;
+				turno4 = null;
 			}
 
 			if (turnos_reservados[4].checked && !turnos_reservados[0].disabled) {
-				var turno5 = usuario;
+				turno5 = usuario;
 			} else if (
 				turnos_reservados[4].checked &&
 				turnos_reservados[4].disabled
 			) {
-				var turno5 = reservas[i].turno5;
+				turno5 = reservas[i].turno5;
 			} else {
-				var turno5 = null;
+				turno5 = null;
 			}
 
 			if (turnos_reservados[5].checked && !turnos_reservados[0].disabled) {
-				var turno6 = usuario;
+				turno6 = usuario;
 			} else if (
 				turnos_reservados[5].checked &&
 				turnos_reservados[5].disabled
 			) {
-				var turno6 = reservas[i].turno6;
+				turno6 = reservas[i].turno6;
 			} else {
-				var turno6 = null;
+				turno6 = null;
 			}
 
 			if (i === 0) {
@@ -533,16 +538,11 @@ function reservar() {
 			}
 
 			const updateRequest = objectStore.put(dados);
-			updateRequest.onsuccess = (event) => {
+			updateRequest.onsuccess = () => {
 				console.log("Reserva Feita!");
 			};
 		};
 	};
-}
-
-function conferir(sala_id) {
-	console.log(sala_id);
-	mostrar_reservas(sala_id);
 }
 
 // carrega o banco de dados depois que a página carregar por completo
@@ -565,3 +565,6 @@ document.getElementById("usuario_logado_sair").addEventListener("click", sair);
 document
 	.getElementById("confirmar_reserva")
 	.addEventListener("click", reservar);
+
+window.mostrar_reservas = mostrar_reservas;
+window.cancelarReserva = cancelarReserva;
