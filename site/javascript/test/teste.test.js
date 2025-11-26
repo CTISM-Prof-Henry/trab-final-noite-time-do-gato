@@ -1,4 +1,4 @@
-import { getDate, validaCPF, validaSala } from "../script-cadastro.js"
+import { getDate, validaCPF, validaSala } from "../validacoes.js"
 
 function testaData(assert) {
     let datas = ["2026-01-01", "2026-05-12", "2026-07-08"];
@@ -22,11 +22,11 @@ function testaSala(assert) {
         ['4O8', 30]
     ];
 
-    assert.equal(validaSala(salas[0][0], salas[0][1]), false);
+    assert.equal(validaSala(salas[0][0], salas[0][1]), "Erro. A capacidade da sala deve ser entre 10 e 40");
     assert.equal(validaSala(salas[1][0], salas[1][1]), true);
     assert.equal(validaSala(salas[2][0], salas[2][1]), true);
-    assert.equal(validaSala(salas[3][0], salas[3][1]), false);
-    assert.equal(validaSala(salas[4][0], salas[4][1]), false);
+    assert.equal(validaSala(salas[3][0], salas[3][1]), "Erro. O número da sala deve ter apenas três dígitos numéricos.");
+    assert.equal(validaSala(salas[4][0], salas[4][1]), "Erro. O número da sala deve ter apenas três dígitos numéricos.");
 
 }
 
