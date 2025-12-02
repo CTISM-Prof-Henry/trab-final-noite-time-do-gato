@@ -7,12 +7,28 @@ div.sala-card ul {
     list-style-type: none;
 }
 
-body > * {
-    border: solid black 1px;
+header {
+  margin: 0.5em auto auto auto;
+}
+
+input.reservar {
+  margin: auto;
 }
 
 main {
     min-height: 80%
+}
+
+div.container {
+  width: 100%;
+}
+
+#nome_usuario {
+  margin: auto;
+}
+
+.reservar > input {
+  margin: auto;
 }
 
 footer {
@@ -26,6 +42,18 @@ abbr[title] {
 
 table {
     margin: auto;
+}
+
+main {
+  margin-top: 2em;
+}
+
+#table-salas tr {
+  margin: 0.25em 0 0.25em 0;
+}
+
+#table-salas td {
+  padding: 0 0.5em 0 0.5em;
 }
 
 tr.reserva td,

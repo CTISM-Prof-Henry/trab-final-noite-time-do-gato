@@ -82,6 +82,7 @@ export function escrever_salas() {
 				td_last.setAttribute("id", item.id);
 				td_last.setAttribute("onclick", 'mostrar_reservas("' + item.id + '")');
                 td_last.setAttribute("id", item.id);
+				td_last.classList.add("btn", "btn-primary");
                 row.appendChild(td_last);
 				table.appendChild(row);
 			}
@@ -228,6 +229,7 @@ export function mostrar_usuario_logado() {
 		localStorage.getItem("usuario_atual") === null
 	) {
 		document.getElementById("div_user_logado").style.display = "none";
+		document.getElementById("div_user_logado").classList.remove("d-flex", "flex-row");
 		document.getElementById("div_user_deslogado").style.display = "block";
 	} else {
 		let dbName = "salasDB";
@@ -245,6 +247,7 @@ export function mostrar_usuario_logado() {
 				div_nome.innerHTML = request.result.nome;
 
 				document.getElementById("div_user_logado").style.display = "block";
+				document.getElementById("div_user_logado").classList.add("d-flex", "flex-row");
 				document.getElementById("div_user_deslogado").style.display = "none";
 			};
 		};
